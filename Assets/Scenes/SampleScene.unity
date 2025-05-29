@@ -753,18 +753,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3093949925249320571, guid: 9bf4d3a07ba51d442995925dfaf12242, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 3093949925249320571, guid: 9bf4d3a07ba51d442995925dfaf12242, type: 3}
-      propertyPath: m_NormalizedViewPortRect.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3093949925249320571, guid: 9bf4d3a07ba51d442995925dfaf12242, type: 3}
-      propertyPath: m_NormalizedViewPortRect.width
-      value: 0.5
-      objectReference: {fileID: 0}
+    - target: {fileID: 729383114746986546, guid: 9bf4d3a07ba51d442995925dfaf12242, type: 3}
+      propertyPath: mainCam
+      value: 
+      objectReference: {fileID: 330585548}
     - target: {fileID: 3984975195779400321, guid: 9bf4d3a07ba51d442995925dfaf12242, type: 3}
       propertyPath: m_Name
       value: SelfCheckIn

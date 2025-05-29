@@ -89,9 +89,9 @@ public class SelfCheckIn : MonoBehaviour
 
     public void OnClickMaxScreen()
     {
-        isChangeRect = true;
-
         isMax = !isMax;
+
+        isChangeRect = isMax;
 
         // 나의 카메라로 보이는 화면을 맨위에 보이게 하자
         myCam.depth = isMax ? 1 : 0;
@@ -103,7 +103,18 @@ public class SelfCheckIn : MonoBehaviour
 
         // 시간 초기화
         currTime = 0;
+
+        // 만약에 줄어드는 연출일 경우
+        if(isMax == false)
+        {
+            // mainCam 의 Focus 실행
+            Camera.main.GetComponent<MainCam>().Focus(() =>
+            {
+                isChangeRect = true;
+            });
+        }
     }
+    
 
     void UpdateRect()
     {
@@ -118,12 +129,15 @@ public class SelfCheckIn : MonoBehaviour
             // 화면크기가 변경 완료 되었다.
             isChangeRect = false;
 
-            // 메인 카메라의 부모를 나로 하자.
-            Camera.main.transform.SetParent(transform);
-            // 메인 카메라의 MainCam 컴포넌트 찾아오자.
-            MainCam mainCam = Camera.main.GetComponent<MainCam>();
-            // 찾아온 컴포넌트에서 Fouce  함수 실행
-            mainCam.Focus();
+            if(isMax)
+            {
+                // 메인 카메라의 부모를 나로 하자.
+                Camera.main.transform.SetParent(transform);
+                // 메인 카메라의 MainCam 컴포넌트 찾아오자.
+                MainCam mainCam = Camera.main.GetComponent<MainCam>();
+                // 찾아온 컴포넌트에서 Fouce  함수 실행
+                mainCam.Focus();
+            }
         }
 
         // 점점 화면이 endRect 로 변화하게

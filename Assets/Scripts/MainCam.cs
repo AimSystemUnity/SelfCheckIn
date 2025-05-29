@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class MainCam : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class MainCam : MonoBehaviour
     // 현재 시간
     float currTime = 1;
 
+    // 카메라가 초기위치로 돌아갔을 때 호출하는 함수
+    Action actionClose;
+
     void Start()
     {
         
@@ -30,7 +34,22 @@ public class MainCam : MonoBehaviour
 
         // 시간 증가시키자.
         currTime += Time.deltaTime;
-        if (currTime > 1) currTime = 1;
+
+        // 만약에 동작이 완료되었다면
+        if (currTime > 1)
+        {
+            currTime = 1;
+            if(actionClose != null)
+            {
+                actionClose();
+                actionClose = null;
+
+                // 우선순위 -1로
+                GetComponent<Camera>().depth = -1;
+                // 부모에서 독립
+                transform.SetParent(null);
+            }
+        }
 
         float ratio = Easing.Linear(currTime);
 
@@ -40,8 +59,10 @@ public class MainCam : MonoBehaviour
         transform.localRotation = Quaternion.Lerp(sRot, eRot, ratio);
     }
 
-    public void Focus()
+    public void Focus(Action onClose = null)
     {
+        actionClose = onClose;
+
         isFocus = !isFocus;
 
         // 카메라의 우선순위를 2로
