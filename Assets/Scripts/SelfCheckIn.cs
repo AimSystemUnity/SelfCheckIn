@@ -53,12 +53,17 @@ public class SelfCheckIn : MonoBehaviour
         originRect = myCam.rect;
 
         delayTime = Random.Range(2.0f, 5.0f);
-        currCo = StartCoroutine(Process());
     }
 
     void Update()
     {
         UpdateRect();
+    }
+
+    public void StartCheckInProcess()
+    {
+        currState = ECheckInState.READY;
+        currCo = StartCoroutine(Process());
     }
 
     IEnumerator Process()
@@ -78,6 +83,11 @@ public class SelfCheckIn : MonoBehaviour
         if(currState == ECheckInState.END)
         {
             currState = ECheckInState.READY;
+
+            // Process 멈추자
+            StopCoroutine(currCo);
+            // 고객에게 원래자리로 돌아가라 (상태 => MOVE_TO_ORIGIN)
+            GetComponentInChildren<Customer>().ChangeState(Customer.ECustomerState.MOVE_TO_ORIGIN);
         }
 
         // 화면 대기 시간을 랜덤하게 설정

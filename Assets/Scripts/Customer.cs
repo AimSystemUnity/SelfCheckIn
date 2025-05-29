@@ -39,6 +39,9 @@ public class Customer : MonoBehaviour
             case ECustomerState.MOVE_TO_MACHINE:
                 UpdateMoveToMachine();
                 break;
+            case ECustomerState.MOVE_TO_ORIGIN:
+                UpdateMoveToOrigin();
+                break;
         }
     }
 
@@ -57,7 +60,22 @@ public class Customer : MonoBehaviour
         }
     }
 
-    void ChangeState(ECustomerState state)
+    void UpdateMoveToOrigin()
+    {
+        // 나의 앞방향으로 이동하자.
+        transform.position += transform.forward * speed * Time.deltaTime;
+        // 이동거리 만큼 remainDist 를 줄이자.
+        remainDist -= speed * Time.deltaTime;
+        // 만약에 도착했다면
+        if (remainDist <= 0)
+        {
+            transform.position = trStart.position;
+            // 상태를 DELAY 으로 전환
+            ChangeState(ECustomerState.DELAY);
+        }
+    }
+
+    public void ChangeState(ECustomerState state)
     {
         // 현재 상태를 state 변경
         currState = state;
@@ -73,6 +91,16 @@ public class Customer : MonoBehaviour
                 transform.forward = trEnd.position - transform.position;
                 // 내가 이동해야 하는 거리
                 remainDist = Vector3.Distance(trEnd.position, transform.position);
+                break;
+            case ECustomerState.CHECKING:
+                // 셀프체크인 기계 동작
+                GetComponentInParent<SelfCheckIn>().StartCheckInProcess();
+                break;
+            case ECustomerState.MOVE_TO_ORIGIN:
+                // 나의 앞방향을 trStart - 나의 위치 (원래 있었던 곳을 향하는 방향)
+                transform.forward = trStart.position - transform.position;
+                // 내가 이동해야 하는 거리
+                remainDist = Vector3.Distance(trStart.position, transform.position);
                 break;
         }
     }
