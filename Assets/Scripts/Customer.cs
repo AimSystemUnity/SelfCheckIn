@@ -27,11 +27,17 @@ public class Customer : MonoBehaviour
     float remainDist;
 
     // 애니메이터
-    Animator anim;
+    Animator [] anim;
+
+    // 현재 보여지는 캐릭터 idx
+    int characterIdx;
 
     void Start()
     {
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponentsInChildren<Animator>();
+
+        for (int i = 0; i < anim.Length; i++)
+            anim[i].gameObject.SetActive(false);
 
         ChangeState(ECustomerState.DELAY);
     }
@@ -90,7 +96,12 @@ public class Customer : MonoBehaviour
         {
             case ECustomerState.DELAY:
                 StartCoroutine(Delay());
-                anim.SetTrigger("IDLE");
+
+                anim[characterIdx].gameObject.SetActive(false);
+                characterIdx = Random.Range(0, anim.Length);
+                anim[characterIdx].gameObject.SetActive(true);
+
+                anim[characterIdx].SetTrigger("IDLE");
 
                 break;
             case ECustomerState.MOVE_TO_MACHINE:
@@ -98,13 +109,13 @@ public class Customer : MonoBehaviour
                 transform.forward = trEnd.position - transform.position;
                 // 내가 이동해야 하는 거리
                 remainDist = Vector3.Distance(trEnd.position, transform.position);
-                anim.SetTrigger("MOVE");
+                anim[characterIdx].SetTrigger("MOVE");
 
                 break;
             case ECustomerState.CHECKING:
                 // 셀프체크인 기계 동작
                 GetComponentInParent<SelfCheckIn>().StartCheckInProcess();
-                anim.SetTrigger("IDLE");
+                anim[characterIdx].SetTrigger("IDLE");
 
                 break;
             case ECustomerState.MOVE_TO_ORIGIN:
@@ -112,7 +123,7 @@ public class Customer : MonoBehaviour
                 transform.forward = trStart.position - transform.position;
                 // 내가 이동해야 하는 거리
                 remainDist = Vector3.Distance(trStart.position, transform.position);
-                anim.SetTrigger("MOVE");
+                anim[characterIdx].SetTrigger("MOVE");
 
                 break;
         }
