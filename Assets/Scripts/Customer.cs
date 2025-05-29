@@ -26,8 +26,13 @@ public class Customer : MonoBehaviour
     // 이동 해야 하는 거리
     float remainDist;
 
+    // 애니메이터
+    Animator anim;
+
     void Start()
     {
+        anim = GetComponentInChildren<Animator>();
+
         ChangeState(ECustomerState.DELAY);
     }
 
@@ -85,22 +90,30 @@ public class Customer : MonoBehaviour
         {
             case ECustomerState.DELAY:
                 StartCoroutine(Delay());
+                anim.SetTrigger("IDLE");
+
                 break;
             case ECustomerState.MOVE_TO_MACHINE:
                 // 나의 앞방향을 trEnd - 나의 위치 (셀프체크 기계를 향하는 방향)
                 transform.forward = trEnd.position - transform.position;
                 // 내가 이동해야 하는 거리
                 remainDist = Vector3.Distance(trEnd.position, transform.position);
+                anim.SetTrigger("MOVE");
+
                 break;
             case ECustomerState.CHECKING:
                 // 셀프체크인 기계 동작
                 GetComponentInParent<SelfCheckIn>().StartCheckInProcess();
+                anim.SetTrigger("IDLE");
+
                 break;
             case ECustomerState.MOVE_TO_ORIGIN:
                 // 나의 앞방향을 trStart - 나의 위치 (원래 있었던 곳을 향하는 방향)
                 transform.forward = trStart.position - transform.position;
                 // 내가 이동해야 하는 거리
                 remainDist = Vector3.Distance(trStart.position, transform.position);
+                anim.SetTrigger("MOVE");
+
                 break;
         }
     }

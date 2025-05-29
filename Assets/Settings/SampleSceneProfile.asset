@@ -21,7 +21,7 @@ MonoBehaviour:
     m_Value: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 8.71
   scatter:
     m_OverrideState: 1
     m_Value: 0.5
@@ -62,13 +62,13 @@ MonoBehaviour:
   active: 1
   color:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.8773585, g: 0.81282073, b: 0.5835262, a: 1}
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.451
   smoothness:
     m_OverrideState: 0
     m_Value: 0.2
